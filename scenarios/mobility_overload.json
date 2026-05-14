@@ -1,0 +1,13 @@
+{
+  "type": "mobility_overload",
+  "description": "Increased call drop rate during evening commute hours. Many UEs reporting brief outages and abnormal handover patterns. Speeds in affected cluster are typical commute speeds (3-5 m/s).",
+  "affected_cell": "cell_B",
+  "demand_mbps": 3.0,
+  "symptoms": "Spike in handover failures during 17:00-19:00 window. Affected UEs show speed 3-5 m/s and 3-5 serving cell changes per minute. SINR volatility high but mean adequate.",
+  "trajectory_data": {
+    "speed_mps": 4.2,
+    "displacement_m": 380,
+    "n_handovers": 4
+  },
+  "temporal_pattern": "diurnal_drift"
+}

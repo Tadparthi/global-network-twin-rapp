@@ -1,0 +1,9 @@
+{
+  "type": "congested_cell",
+  "description": "Cell A is showing severely degraded UE throughput at evening peak. UEs report poor video streaming. Mean SINR remains adequate (5.7 dB) but achieved throughput is far below demand. Suspected cause: capacity exhaustion rather than RF degradation.",
+  "affected_cell": "cell_A",
+  "demand_mbps": 8.0,
+  "symptoms": "PRBs at 100% utilisation; satisfaction below 5%; mean achieved throughput 0.4 Mbps despite 8 Mbps demand; congestion ratio above 5x.",
+  "trajectory_data": null,
+  "temporal_pattern": "logistic_s_curve"
+}

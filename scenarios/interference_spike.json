@@ -1,0 +1,9 @@
+{
+  "type": "interference_spike",
+  "description": "Cell A's UEs are showing degraded SINR with high RSRP from neighbour cells. Cell A's own configuration has not changed. Suspected cause: interference from a neighbour cell, possibly Cell C which had a recent power adjustment.",
+  "affected_cell": "cell_A",
+  "demand_mbps": 5.0,
+  "symptoms": "Mean SINR dropped from 8.4 dB to 5.7 dB. Cell-edge UEs see strong RSRP from Cell C. Pct_poor increased from 18% to 41%. Ground hardware configuration unchanged.",
+  "trajectory_data": null,
+  "temporal_pattern": "instantaneous_step"
+}
