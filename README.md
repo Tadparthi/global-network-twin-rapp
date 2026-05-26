@@ -1,5 +1,5 @@
 # GNT Multi-Agent rApp
-![CI](https://github.com/Tadparthi/global-network-twin-rapp/actions/workflows/ci.yml/badge.svg)
+
 > **Multi-agent LangGraph system for 5G RF optimisation.** Supervisor pattern with Claude Sonnet 4 coordinating four specialist agents that call physics-constrained ML models as tools to diagnose degraded cells and generate O-RAN A1 policies with embedded provenance.
 
 ![demo](demo.gif)
