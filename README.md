@@ -65,10 +65,25 @@ This is the standard pattern for production multi-agent systems.
 
 ## MCP server
 
-The repository includes a Model Context Protocol (MCP) server that exposes the GNT backend as a small set of high-level tools — scenario discovery, scenario analysis, and API health checks — consumable by any MCP-compatible client. Rather than surfacing every low-level GNT module individually, the server exposes coarse-grained, task-level operations, keeping the deterministic RF engine encapsulated behind a clean interface.
+The repository includes a [Model Context Protocol](https://modelcontextprotocol.io) server (`src/mcp_server/server.py`, built with `fastmcp`) that exposes the deployed GNT backend to any MCP-compatible client — Claude Desktop, IDEs, or other agents.
 
-See `src/mcp_server/` for the implementation.
+The server is a thin, stateless HTTP client: it does not import GNT code directly, but calls the deployed FastAPI service over REST. This keeps the MCP layer fully decoupled from the backend. It exposes three high-level tools:
 
+| MCP tool | Backend endpoint | Purpose |
+|---|---|---|
+| `health_check_gnt_api` | `GET /health` | Check the GNT backend is reachable |
+| `list_gnt_scenarios` | `GET /scenarios` | List available analysis scenarios |
+| `analyze_gnt_scenario` | `POST /analyze-scenario` | Run the full multi-agent analysis for a scenario |
+
+Rather than surfacing every low-level GNT module individually, the server exposes coarse-grained, task-level operations — keeping the deterministic RF engine encapsulated behind a clean interface.
+
+The backend URL defaults to the deployed instance and is overridable via the `GNT_API_BASE_URL` environment variable:
+
+```powershell
+# Point the MCP server at a local backend instead of the deployed one
+$env:GNT_API_BASE_URL = "http://127.0.0.1:8000"
+python -m src.mcp_server.server
+```
 ## Quick start (Windows)
 
 ```powershell
@@ -172,7 +187,7 @@ To deploy in production: add LangSmith or OpenTelemetry for observability, repla
 - **Python 3.11+** (CI runs 3.13)
 - **LangGraph** — state machine for multi-agent orchestration, checkpointer + interrupt
 - **LangChain** — tool wrappers, message types, structured output
-- **MCP (Model Context Protocol)** — standardised tool interface to the GNT backend
+- **MCP (Model Context Protocol)** — `fastmcp` server exposing the GNT backend as standardised tools
 - **Anthropic Claude Sonnet 4** — LLM provider
 - **Pydantic** — schemas for type-safe routing decisions
 - **FastAPI** — HTTP wrapper around the workflow
