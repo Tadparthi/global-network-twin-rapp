@@ -14,7 +14,9 @@ from pydantic import BaseModel, Field
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import AIMessage
 from src.state.state import AgentState
+import logging
 
+logger = logging.getLogger(__name__)
 
 # ─────────────────────────────────────────────────────────────────────────
 # Structured output schemas
@@ -104,9 +106,10 @@ Decide the routing plan."""
             {"role": "user", "content": prompt},
         ])
 
-        print(f"\n[SUPERVISOR] Scenario received: {scenario.get('type')}")
-        print(f"[SUPERVISOR] Routing plan: {' -> '.join(decision.routing_plan)}")
-        print(f"[SUPERVISOR] Reasoning: {decision.reasoning}")
+# after:
+        logger.info("Scenario received: %s", scenario.get("type"))
+        logger.info("Routing plan: %s", " -> ".join(decision.routing_plan))
+        logger.debug("Routing reasoning: %s", decision.reasoning)
 
         return {
             "messages": [AIMessage(content=f"Routing: {' -> '.join(decision.routing_plan)}")],
@@ -148,7 +151,7 @@ Write the 4-6 sentence recommendation now."""
         ])
 
         recommendation = response.content if isinstance(response.content, str) else str(response.content)
-        print(f"\n[SUPERVISOR] Final recommendation compiled.")
+        logger.info("Final recommendation compiled.")
 
         return {
             "messages": [AIMessage(content=recommendation)],

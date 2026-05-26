@@ -15,6 +15,7 @@ workflows — the agentic equivalent of the GNT Daily Brief approval step.
 """
 import argparse
 import json
+import logging
 import os
 import sys
 import uuid
@@ -139,6 +140,10 @@ def run_scenario(scenario_name: str, model: str, approve_policy: bool) -> None:
 
 
 def main():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s  %(name)s  %(levelname)s  %(message)s",
+    )
     parser = argparse.ArgumentParser(description="Run a scenario through the RF multi-agent system")
     parser.add_argument(
         "--scenario", default="congested_cell",

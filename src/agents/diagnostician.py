@@ -9,7 +9,9 @@ from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from src.state.state import AgentState
 from src.tools.gnt_tools import DIAGNOSTICIAN_TOOLS
+import logging
 
+logger = logging.getLogger(__name__)
 
 DIAGNOSTICIAN_SYSTEM = """You are the Diagnostician Agent.
 
@@ -46,7 +48,8 @@ Trajectory data (if relevant): {scenario.get('trajectory_data', 'not provided')}
 
 Use your tools to gather evidence, then provide your final diagnosis."""
 
-        print(f"\n[DIAGNOSTICIAN] Starting analysis for {scenario.get('affected_cell')}")
+        logger.info("Starting analysis for %s", scenario.get("affected_cell"))
+      
 
         messages = [
             SystemMessage(content=DIAGNOSTICIAN_SYSTEM),
@@ -69,14 +72,14 @@ Use your tools to gather evidence, then provide your final diagnosis."""
             for tool_call in response.tool_calls:
                 tool_name = tool_call["name"]
                 tool_args = tool_call["args"]
-                print(f"[DIAGNOSTICIAN] Calling tool: {tool_name}({tool_args})")
+                logger.info("Calling tool: %s(%s)", tool_name, tool_args)
 
                 # Find and run the tool
                 tool_fn = next((t for t in DIAGNOSTICIAN_TOOLS if t.name == tool_name), None)
                 if tool_fn:
                     result = tool_fn.invoke(tool_args)
                     findings[tool_name] = result
-                    print(f"[DIAGNOSTICIAN]   -> {_short(result)}")
+                    logger.debug("Tool result: %s", _short(result))
 
                     # Append tool result for the next LLM iteration
                     from langchain_core.messages import ToolMessage
@@ -86,7 +89,7 @@ Use your tools to gather evidence, then provide your final diagnosis."""
                     ))
 
         diagnosis = response.content if response.content else "Diagnosis incomplete"
-        print(f"[DIAGNOSTICIAN] {_short(diagnosis, 200)}")
+        logger.info("Diagnosis: %s", _short(diagnosis, 200))
 
         return {
             "messages": [AIMessage(content=f"DIAGNOSTIC: {diagnosis}")],
