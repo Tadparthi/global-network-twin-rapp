@@ -21,6 +21,7 @@ A working multi-agent system demonstrating production-pattern agentic AI:
 The tools are wrappers around the Global Network Twin (GNT) — a physics-constrained 5G digital twin implementing TR 38.901 propagation with bounded ML residuals. Both this rApp and the deterministic pipeline implementation share the same A1 output contract; the agentic version adds adaptive routing.
 
 ## Architecture
+'''
                 ┌─────────────────────────┐
                 │   SUPERVISOR AGENT      │
                 │  (Pydantic structured   │
@@ -41,6 +42,7 @@ The tools are wrappers around the Global Network Twin (GNT) — a physics-constr
    │  degradation · classify_mobility · compute_        │
    │  capacity · get_temporal_urgency · generate_a1     │
    └────────────────────────────────────────────────────┘
+   '''
    Two distinct layers do two distinct jobs. **LangGraph** orchestrates *which* agent runs and when — the supervisor's conditional routing. **MCP** is the *transport* through which an external client reaches the GNT backend. They are not the same mechanism described twice: LangGraph is internal orchestration, MCP is the external tool interface.
 
 ## Why the supervisor pattern
